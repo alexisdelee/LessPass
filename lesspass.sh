@@ -13,6 +13,7 @@ do
 			printf "Usage\n"
 			printf "\t$ bash lesspass.sh <site> <login> <masterPassword> [options]\n\n"
 			printf "Options\n"
+            printf "\t--algo=*, -A=*         string (default sha256)\n"
 			printf "\t--length=*, -L=*       int (default 16)\n"
 			printf "\t--iteration=*, -I=*    int (default 1)\n\n"
 			printf "\t--clipboard            copy generated password to clipboard rather than displaying it.\n\n"
@@ -34,14 +35,18 @@ do
 			exit
 			shift
 			;;
+        --algo=*|-A=*)
+            algo=$( _argv_parse_string $argv )
+            shift
+            ;;
 		--length=*|-L=*)
-		  length=$( _argv_parse $argv )
-		  length=$( echo $length | bc )
+		    length=$( _argv_parse_number $argv )
+		    length=$( echo $length | bc )
 		 	shift
 		 	;;
 		--iteration=*|-I=*)
-		  iteration=$( _argv_parse $argv )
-		  iteration=$( echo $iteration | bc )
+		    iteration=$( _argv_parse_number $argv )
+		    iteration=$( echo $iteration | bc )
 		 	shift
 		 	;;
 		--*)
@@ -49,9 +54,9 @@ do
 			shift
 			;;
 		-*)
-		  customizeTokens[0]=$( _get_parameter $argv "-" )
-		  shift
-		  ;;
+		    customizeTokens[0]=$( _get_parameter $argv "-" )
+		    shift
+		    ;;
 		*)
 		 	data+=( $argv )
 			;;
