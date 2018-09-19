@@ -156,6 +156,7 @@ runtime()
 
         iteration=$( echo "${options[1]}" | bc )
         length=$( echo "${options[2]}" | bc )
+        algo=$( echo "${options[3]}" )
 
         customizeTokens[0]=${options[0]}
     fi
@@ -186,7 +187,7 @@ runtime()
     if (( ( flag & store ) != 0 ))
     then
         options=( $iteration $length )
-        _set_db ${data[*]} $customizeTokens ${options[*]}
+        _set_db ${data[*]} $customizeTokens $algo ${options[*]}
     fi
 
     if (( ( flag  & clipboard ) != 0 ))

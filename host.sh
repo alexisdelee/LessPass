@@ -26,6 +26,7 @@ _get_db()
 		options+=( `echo "$data" | jq -r ".tokens"` )
 		options+=( `echo "$data" | jq -r ".iteration"` )
 		options+=( `echo "$data" | jq -r ".length"` )
+        options+=( `echo "$data" | jq -r ".algo"` )
 
 		echo "${options[*]}"
 	fi
@@ -40,14 +41,16 @@ _set_db()
 		"length"
 	)
 
-	json="{login:\"${_uuid}\",tokens:\"$4\""
-	for (( argv = 4 ; argv < $#; argv = argv + 1 ))
+	json="{login:\"${_uuid}\",algo:\"$5\",tokens:\"$4\""
+	for (( argv = 5 ; argv < $#; argv = argv + 1 ))
 	do
-		json="$json,${keys[$argv - 4]}:"${@:$argv+1:1}""
+		json="$json,${keys[$argv - 5]}:"${@:$argv+1:1}""
 	done
 	json="$json}"
 
 	data=`jq -n --arg appname "db" "$json"`
+
+    echo $data
 
 	url="/etc/lesspass/"$( echo -n $2 | sha1sum | awk '{ print $1 }' )"/"$( echo -n $1 | sha1sum | awk '{ print $1 }' )
 	_ssl_db "--encrypt" "$3" "$url" "$data"
