@@ -50,8 +50,6 @@ _set_db()
 
 	data=`jq -n --arg appname "db" "$json"`
 
-    echo $data
-
 	url="/etc/lesspass/"$( echo -n $2 | sha1sum | awk '{ print $1 }' )"/"$( echo -n $1 | sha1sum | awk '{ print $1 }' )
 	_ssl_db "--encrypt" "$3" "$url" "$data"
 )
